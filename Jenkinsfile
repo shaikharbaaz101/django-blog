@@ -23,7 +23,7 @@ pipeline {
 
         stage('deploy EC2') {
             steps {
-                 echo 'docker run -d -p 8000:8000 shaikharbaaz101/django:2'
+                 sh "docker run -d -p 8000:8000 shaikharbaaz101/django:2"
             }
         }
 
