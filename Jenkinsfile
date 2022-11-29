@@ -10,14 +10,14 @@ pipeline {
     stages {
         stage('docker build image') {
             steps {
-                sh "docker build -t shaikharbaaz101/django:1 ."
+                sh "sudo docker build -t shaikharbaaz101/django:1 ."
             }
         }
 
         stage('docker push image') {
             steps {
                 sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin'
-                sh "docker push shaikharbaaz101/django:1"
+                sh "sudo docker push shaikharbaaz101/django:1"
             }
         }
 
