@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    inputs:
+      model_name:
+        description: 'The name of the dynamic model'
+        required: true
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
