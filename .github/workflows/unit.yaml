@@ -1,0 +1,16 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - master  # Modify this to match your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Add your build and test steps here
