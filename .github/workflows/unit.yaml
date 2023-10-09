@@ -12,7 +12,8 @@ env:
 jobs:
   rwde-build-and-test:
     # if: contains(github.event.pull_request.title, 'UT')
-    if: ${{ contains(github.event.pull_request.title, 'ut') }}
+    # if: ${{ contains(github.event.pull_request.title, 'ut') }}
+    if: contains( ${{ github.event.pull_request.title }}, 'ut')
     # Latest Ubuntu supporting Python 3.9.5 is 20.04
     environment: dmi-databricks-qa2-workspace
     runs-on: ubuntu-20.04
