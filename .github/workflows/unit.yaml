@@ -127,6 +127,14 @@ jobs:
           echo "schema.yml removed from every models folder"
           echo "Listing contents of ./models:"
           ls -R ./models
+
+      - name: Remove sources.yml from /models
+        working-directory: ./projects/dmi_rwde
+        run: |
+         rm ./models/sources.yml
+         echo "sources.yml removed from /models"
+         echo "Listing contents of /models:"
+         ls -R ./models
       
       - name: Copy ut_schema.yml to every models folder
         working-directory: projects/dmi_rwde
