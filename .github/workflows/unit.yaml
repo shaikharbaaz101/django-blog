@@ -159,7 +159,16 @@ jobs:
           echo "packages.yml copied to /dmi_rwde"
           echo "Listing contents of /dmi_rwde:"
           ls -R ./
-      
+
+      - name: Copy tests/generic from unittest to ./projects/dmi_rwde/
+        working-directory: ./projects/dmi_rwde
+        run: |
+         mkdir -p ./tests/generic
+         cp -r ../unittest/tests/generic/* ./tests/generic/
+         echo "tests/generic copied from unittest to ./projects/dmi_rwde/"
+         echo "Listing contents of ./projects/dmi_rwde/tests/generic:"
+         ls -R ./tests/generic
+
       - name: Move all .csv files from any subdirectory under ./unittest/mock/ to a corresponding subdirectory under ./seed/
         working-directory: projects/dmi_rwde
         run: |
