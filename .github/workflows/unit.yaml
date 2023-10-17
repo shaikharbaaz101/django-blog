@@ -139,7 +139,7 @@ jobs:
       - name: Copy ut_source.yml to every models folder
         working-directory: projects/dmi_rwde
         run: |
-          cp ./unittest/ut_source.yml ./models/
+          cp ./unittest/ut_sources.yml ./models/
           echo "ut_source.yml copied to every models folder"
           echo "Listing contents of ./models:"
           ls -R ./models
