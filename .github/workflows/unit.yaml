@@ -164,7 +164,7 @@ jobs:
         working-directory: ./projects/dmi_rwde
         run: |
          mkdir -p ./tests/generic
-         cp -r ../unittest/tests/generic/* ./tests/generic/
+         cp -r ./unittest/tests/generic/* ./tests/generic/
          echo "tests/generic copied from unittest to ./projects/dmi_rwde/"
          echo "Listing contents of ./projects/dmi_rwde/tests/generic:"
          ls -R ./tests/generic
