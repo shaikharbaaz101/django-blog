@@ -1,1 +1,1 @@
-poetry run dbt deps
+echo "it was able to read from commands.txt"
