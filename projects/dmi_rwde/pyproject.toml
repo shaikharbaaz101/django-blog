@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dmi-openclinica-databricks"
+version = "0.1.0"
+description = "DBT Project for creating Open Clinica CDM data in Databricks."
+authors = ["DMI Team"]
+packages = [
+    { include = "dmi" },
+]
+
+# Need to explicitly include generated code so it shows up in wheel file
+include = ["dmi/oc4_rwde/xml_model.py"]
+
+
+[tool.poetry.dependencies]
+python = "~3.9.5"
+dbt-core = "1.6.0"
+xsdata = {version = "^22.2", extras = ["cli"]}
+
+[tool.poetry.dev-dependencies]
+dbt-databricks = "1.6.1"
+dbx = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
