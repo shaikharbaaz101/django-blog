@@ -11,22 +11,148 @@ env:
 
 jobs:
   rwde-build-and-test:
-    if: contains(github.event.pull_request.title, 'UT')
-    
+    if: contains(toLower(github.event.pull_request.title), 'ut')
     # Latest Ubuntu supporting Python 3.9.5 is 20.04
     environment: dmi-databricks-qa2-workspace
     runs-on: ubuntu-20.04
     steps:
-    
       - name: Checkout Source Code
         uses: actions/checkout@v3
         with:
           lfs: true
-
+      #----------------------------------------------
+      #       set-up python
+      #----------------------------------------------
       - name: Configure Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9.5"
-
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
+
+      #----------------------------------------------
+      #       cache poetry install
+      #
+      # Cache the installation of Poetry itself, e.g. the next step.
+      # This prevents the workflow from installing Poetry every time,
+      # which can be slow. Note the use of the Poetry version number
+      # in the cache key, and the "-0" suffix: this allows you to
+      # invalidate the cache manually if/when you want to upgrade
+      # Poetry, or if something goes wrong.
+      #----------------------------------------------
+      - name: cache poetry install
+        id: cached-poetry
+        uses: actions/cache@v3
+        with:
+          path: ~/.local
+          key: poetry-1.4.2-py-3.9.5
+
+      #----------------------------------------------
+      #       install poetry
+      #
+      # Install Poetry. You could do this manually, or there are
+      # several actions that do this. `snok/install-poetry` seems to
+      # be minimal yet complete, and really just calls out to Poetry's
+      # default install script, which feels correct. I pin the Poetry
+      # version here.
+      #
+      # The key configuration value here is `virtualenvs-in-project: true`:
+      # this creates the venv as a `.venv` in your project directory,
+      # which allows the `install` step to easily cache it.
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.4.2
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: false
+
+      #----------------------------------------------
+      #       cache poetry build
+      #
+      # Cache the dependencies (i.e. all the stuff in your `pyproject.toml`).
+      # Note the cache key: it just depends on the poetry.lock file.
+      #----------------------------------------------
+      - name: Poetry Build Cache
+        id: poetry-cache-dbt
+        uses: actions/cache@v3
+        with:
+          path: projects/dmi_rwde/.venv
+          key: venv-${{ runner.os }}-${{ hashFiles('projects/dmi_rwde/poetry.lock') }}
+
+      #----------------------------------------------
+      #       install dependencies only
+      #
+      # Install dependencies. `--no-root` means "install all
+      # dependencies but not the project itself", which is what
+      # you want to avoid... i.e caching _the_ code. The `if`
+      # statement ensures this only runs on a cache miss.
+      #----------------------------------------------
+      - name: Install Dependencies
+        if: steps.poetry-cache-dbt.outputs.cache-hit != 'true'
+        working-directory: projects/dmi_rwde
+        run: poetry install --no-root --no-interaction
+
+      #----------------------------------------------
+      #       install library
+      #
+      # Now we install _the_ project. This is a good idea since
+      # it fully-exercises the pyproject.toml and makes that if
+      # you add things like console-scripts at some point that
+      # they'll be installed and working.
+      #----------------------------------------------
+      - name: Install Library
+        working-directory: projects/dmi_rwde
+        run: poetry install
+
+	  #----------------------------------------------
+      #           Steps for Unit Testing
+      # It removes schema.yml from every ./models folders recursively.
+      # It copies ut_schema.yml from ./unittest/ to ./models/
+      # It copies ut_source.yml from /unittest/ to ./models/
+      # It moves all .csv files from any subdirectory under .unittest/mock/ to a corresponding subdirectory under ./seed/  with the source folder structure, overwriting any existing files.
+      # Finally, it reads commands from a file, ./unittest/ut_commands.txt directory and executes them.
+      #----------------------------------------------
+
+
+      #----------------------------------------------
+      #           Steps for Unit Testing
+      #----------------------------------------------
+      
+      - name: Remove schema.yml from every models folder
+        working-directory: projects/dmi_rwde
+        run: |
+          find ./models -name "schema.yml" -type f -delete
+      
+      - name: Copy ut_schema.yml to every models folder
+        working-directory: projects/dmi_rwde
+        run: |
+          cp ./unittest/ut_schema.yml ./models/
+      
+      - name: Copy ut_source.yml to every models folder
+        working-directory: projects/dmi_rwde
+        run: |
+          cp ./unittest/ut_source.yml ./models/
+
+      - name: Copy packages.yml to /dmi_rwde
+        working-directory: projects/dmi_rwde
+        run: |
+          cp ./unittest/packages.yml ./
+      
+      - name: Move all .csv files from any subdirectory under ./unittest/mock/ to a corresponding subdirectory under ./seed/
+        working-directory: projects/dmi_rwde
+        run: |
+          find ./unittest/mock -name "*.csv" -type f | while read src; do
+            dest=${src//unittest\/mock/seed}
+            mkdir -p $(dirname "$dest")
+            mv -f "$src" "$dest"
+          done
+      
+      - name: Read commands from a file and execute them
+        working-directory: projects/dmi_rwde
+        run: |
+          while IFS= read -r cmd
+          do
+            eval "$cmd"
+          done < ./unittest/ut_commands.txt
