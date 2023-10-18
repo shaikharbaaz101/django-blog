@@ -1,6 +1,5 @@
+# Im trying some comments
+# Im trying some more comments
 echo "it was able to read from commands.txt"
-poetry run dbt deps
-poetry run dbt clean --project-dir conf/unittest --target unittest
-poetry run dbt compile --project-dir conf/unittest --target unittest
-poetry run dbt seed --project-dir conf/unittest --target unittest --select source
-poetry run dbt build --project-dir conf/unittest --target unittest --select rwde_melanoma_patients rwde_melanoma_patients_iv ikm_mel_regimen
+# it ran first
+echo "it ran 2nd"
