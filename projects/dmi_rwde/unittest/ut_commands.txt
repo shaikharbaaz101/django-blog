@@ -1,5 +1,17 @@
-# Im trying some comments
-# Im trying some more comments
-echo "it was able to read from commands.txt"
-# it ran first
-echo "it ran 2nd"
+#############  Reference: ########################
+#  dbt deps will load depentancy dbt_expectation package.
+#  dbt seed command will load only Source tables, If we are mocking the data for source tables.
+#  dbt build command will load depentancy seed files and then load models and also Unit testing
+#  Ex dbt commands for running models.
+#  dbt build --select <model names with space> --target unittest --proj-dir conf/unittest --exclude <model names with space>
+# 
+#  --select - to run specific models.
+#  --target - for unit testing parameter
+#  --proj-dir  - for unit testing parameter
+#  --exclude - run all models except specified list
+###################################################
+
+###### Write the set of commands here below #######
+dbt deps
+dbt seed
+dbt run --select g1g2_patiants
