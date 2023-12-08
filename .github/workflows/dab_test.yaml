@@ -1,0 +1,64 @@
+name: dbt-dmi-rwde-dbx
+
+on:
+  workflow_dispatch:
+    inputs:
+      databricks-workspace:
+        type: choice
+        description: Target DMI Databricks workspace
+        required: true
+        options:
+          - uat
+          - qa2
+          - prod
+
+jobs:
+  rwde-build-and-test:
+    # Latest Ubuntu supporting Python 3.9.5 is 20.04
+    environment: dmi-databricks-${{ github.event.inputs.databricks-workspace }}-workspace
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+      #----------------------------------------------
+      #       set-up python
+      #----------------------------------------------
+      - name: Configure Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9.5"
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+      #----------------------------------------------
+      #       set-up databricks CLI
+      #----------------------------------------------
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      #----------------------------------------------
+      #       validating and deploying using DAB
+      #----------------------------------------------
+      - name: Deploy workflows
+        working-directory: projects/dmi_rwde
+        run: |
+          databricks --version
+          # export DATABRICKS_HOST=${{ secrets.DMI_DATABRICKS_HOST }}
+          # export DATABRICKS_JOBS_API_VERSION=2.1
+          # export DATABRICKS_TOKEN=${{ secrets.DMI_DATABRICKS_RWDE_CICD_SERVICE_PRINCIPAL_TOKEN }}
+          # env=${{ github.event.inputs.databricks-workspace }}
+          if [ "$env" == "uat" ]; then
+              cd uat
+              databricks bundle validate -t uat
+              databricks bundle deploy -t uat
+          elif [ "$env" == "qa2" ]; then
+              cd qa2
+              databricks bundle validate -t qa2
+              databricks bundle deploy -t qa2
+          else
+              cd prod
+              databricks bundle validate -t prod
+              databricks bundle deploy -t prod
+          fi
