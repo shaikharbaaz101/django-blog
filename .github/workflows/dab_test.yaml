@@ -42,7 +42,7 @@ jobs:
       #       validating and deploying using DAB
       #----------------------------------------------
       - name: Deploy workflows
-        working-directory: projects/dmi_rwde
+        # working-directory: ./
         run: |
           databricks --version
           # export DATABRICKS_HOST=${{ secrets.DMI_DATABRICKS_HOST }}
