@@ -13,4 +13,4 @@ targets:
       host: https://adb-5116920453114963.3.azuredatabricks.net
       root_path: /Shared/dbx/projects/default
       artifact_path: "/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/my-envs/${bundle.target}/artifacts"
-      profile: uat
+      # profile: uat
