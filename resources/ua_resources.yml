@@ -1,0 +1,45 @@
+resources:
+  jobs:
+    dbt-dmi-rwde-sp-ua-dab-test:
+     name: dbt-dmi-rwde-sp-ua-dab-test
+     email_notifications:
+        on_failure:
+          - "arbaaz.suleman@tekizma.com"
+     schedule:
+        quartz_cron_expression: "0 0 6 ? * MON,TUE,WED,THU,FRI *"
+        timezone_id: "America/New_York"
+     git_source:
+        git_url: "https://github.com/mckesson/msh-adp-etl.git"
+        git_provider: "gitHubEnterprise"
+        git_branch: "dab-test"
+     tasks:
+      - task_key: dbt-dmi-rwde-sp-uat-dab-test
+        dbt_task:
+           project_directory: projects/dmi_rwde/
+           commands:
+              - dbt deps
+              - dbt compile --target dabtest_uat_rwde --project-dir conf/ua
+              #- dbt build --exclude cdm-silver-rwr cdm-gold-rwr cdm-gold-rwda cdm-stats --target ua --project-dir conf/ua
+              #- dbt build --select cdm-silver-rwr cdm-gold-rwr cdm-gold-rwda cdm-stats  --target ua --project-dir conf/ua
+           profiles_directory: conf/
+        job_cluster_key: "dbt_CLI"
+        libraries:
+           - pypi:
+              package: dbt-databricks==1.6.1
+     job_clusters:
+      - job_cluster_key: "dbt_CLI"
+        new_cluster:
+           spark_version: 11.3.x-scala2.12
+           spark_conf:
+              "spark.sql.session.timeZone:": America/Los_Angeles
+           node_type_id: Standard_D4ds_v5
+           custom_tags:
+              core-workload: RWDE
+              core-user-group: ONTADA_DMI_GENOMICS
+              dmi-cluster-databricks-workspace: dmiqaworkspace
+           autoscale:
+              min_workers: 1
+              max_workers: 2
+           data_security_mode: "SINGLE_USER"
+     tags:
+        business_unit: dmi-rwde
