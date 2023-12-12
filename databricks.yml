@@ -5,7 +5,7 @@ bundle:
   #   branch: main
 
 include:
-  - ua_resources.yml
+  - resources/ua_resources.yml
 
 targets:
   uat:
