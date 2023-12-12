@@ -1,0 +1,16 @@
+bundle:
+  name: dmi_rwde
+  # git:
+  #   origin_url: https://github.com/mckesson/msh-adp-etl.git
+  #   branch: main
+
+include:
+  - ua_resources.yml
+
+targets:
+  uat:
+    workspace:
+      host: https://adb-5116920453114963.3.azuredatabricks.net
+      root_path: /Shared/dbx/projects/default
+      artifact_path: "/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/my-envs/${bundle.target}/artifacts"
+      profile: uat
