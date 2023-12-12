@@ -51,7 +51,7 @@ jobs:
           env=${{ github.event.inputs.databricks-workspace }}
           if [ "$env" == "uat" ]; then
               # cd uat
-              # databricks bundle validate -t uat
+              databricks bundle validate -t uat
               # databricks bundle deploy -t uat
               databricks warehouses list
           elif [ "$env" == "qa2" ]; then
