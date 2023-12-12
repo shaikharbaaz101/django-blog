@@ -25,12 +25,12 @@ jobs:
       #----------------------------------------------
       #       set-up python
       #----------------------------------------------
-      - name: Configure Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9.5"
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
+      # - name: Configure Python
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.9.5"
+      # - name: Display Python version
+      #   run: python -c "import sys; print(sys.version)"
 
       #----------------------------------------------
       #       set-up databricks CLI
@@ -59,7 +59,8 @@ jobs:
               databricks bundle validate -t qa2
               databricks bundle deploy -t qa2
           else
-              cd prod
-              databricks bundle validate -t prod
-              databricks bundle deploy -t prod
+              # cd prod
+              # databricks bundle validate -t prod
+              # databricks bundle deploy -t prod
+              databricks warehouses list
           fi
