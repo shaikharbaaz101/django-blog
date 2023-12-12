@@ -53,7 +53,7 @@ jobs:
               # cd uat
               databricks warehouses list
               databricks bundle validate -t uat
-              # databricks bundle deploy -t uat
+              databricks bundle deploy -t uat
           elif [ "$env" == "qa2" ]; then
               cd qa2
               databricks bundle validate -t qa2
