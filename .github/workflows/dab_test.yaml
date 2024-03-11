@@ -33,7 +33,7 @@ jobs:
         run: python -c "import sys; print(sys.version)"
         
       - name: Update pip version
-        run: python -m pip install --upgrade pip
+        run: /opt/hostedtoolcache/Python/3.9.5/x64/bin/python -m pip install --upgrade pip
 
       #----------------------------------------------
       #       set-up databricks CLI
