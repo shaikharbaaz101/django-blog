@@ -17,6 +17,8 @@ jobs:
     # Latest Ubuntu supporting Python 3.9.5 is 20.04
     environment: dmi-databricks-${{ github.event.inputs.databricks-workspace }}-workspace
     runs-on: ubuntu-20.04
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: 1
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
