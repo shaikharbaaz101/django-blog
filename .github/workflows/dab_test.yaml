@@ -25,12 +25,12 @@ jobs:
       #----------------------------------------------
       #       set-up python
       #----------------------------------------------
-      # - name: Configure Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: "3.9.5"
-      # - name: Display Python version
-      #   run: python -c "import sys; print(sys.version)"
+      - name: Configure Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9.5"
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
 
       #----------------------------------------------
       #       set-up databricks CLI
@@ -41,26 +41,26 @@ jobs:
       #----------------------------------------------
       #       validating and deploying using DAB
       #----------------------------------------------
-      - name: Deploy workflows
-        # working-directory: ./
-        run: |
-          databricks --version
-          export DATABRICKS_HOST=${{ secrets.DMI_DATABRICKS_HOST }}
-          export DATABRICKS_JOBS_API_VERSION=2.1
-          export DATABRICKS_TOKEN=${{ secrets.DMI_DATABRICKS_RWDE_CICD_SERVICE_PRINCIPAL_TOKEN }}
-          env=${{ github.event.inputs.databricks-workspace }}
-          if [ "$env" == "uat" ]; then
-              # cd uat
-              databricks warehouses list
-              databricks bundle validate -t uat
-              databricks bundle deploy -t uat
-          elif [ "$env" == "qa2" ]; then
-              cd qa2
-              databricks bundle validate -t qa2
-              databricks bundle deploy -t qa2
-          else
-              # cd prod
-              # databricks bundle validate -t prod
-              # databricks bundle deploy -t prod
-              databricks warehouses list
-          fi
+      # - name: Deploy workflows
+      #   # working-directory: ./
+      #   run: |
+      #     databricks --version
+      #     export DATABRICKS_HOST=${{ secrets.DMI_DATABRICKS_HOST }}
+      #     export DATABRICKS_JOBS_API_VERSION=2.1
+      #     export DATABRICKS_TOKEN=${{ secrets.DMI_DATABRICKS_RWDE_CICD_SERVICE_PRINCIPAL_TOKEN }}
+      #     env=${{ github.event.inputs.databricks-workspace }}
+      #     if [ "$env" == "uat" ]; then
+      #         # cd uat
+      #         databricks warehouses list
+      #         databricks bundle validate -t uat
+      #         databricks bundle deploy -t uat
+      #     elif [ "$env" == "qa2" ]; then
+      #         cd qa2
+      #         databricks bundle validate -t qa2
+      #         databricks bundle deploy -t qa2
+      #     else
+      #         # cd prod
+      #         # databricks bundle validate -t prod
+      #         # databricks bundle deploy -t prod
+      #         databricks warehouses list
+      #     fi
