@@ -52,7 +52,7 @@ jobs:
           databricks --version
           # export DATABRICKS_HOST=${{ secrets.DMI_DATABRICKS_HOST }}
           # export DATABRICKS_JOBS_API_VERSION=2.1
-          # export DATABRICKS_TOKEN=${{ secrets.DMI_DATABRICKS_RWDE_CICD_SERVICE_PRINCIPAL_TOKEN }}
+          export DATABRICKS_TOKEN=${{ secrets.DMI_DATABRICKS_RWDE_CICD_SERVICE_PRINCIPAL_TOKEN }}
           env=${{ github.event.inputs.databricks-workspace }}
           if [ "$env" == "uat" ]; then
               # cd uat
