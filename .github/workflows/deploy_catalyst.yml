@@ -30,7 +30,8 @@ jobs:
           fi
 
       - name: Display environment
-        run: echo "Environment: ${{ env.ENVIRONMENT }}"
+        run: |
+          echo "Environment: ${{ env.ENVIRONMENT }}"
 
       - name: Checkout Code
         uses: actions/checkout@v1
