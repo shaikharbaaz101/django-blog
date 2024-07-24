@@ -50,10 +50,12 @@ jobs:
           env=${{ github.event.inputs.databricks-workspace }}
           if [ "$env" == "qa" ]; then
               export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_LS_DATA }}
+              echo "this is qa"
               databricks bundle validate -t qa
               #databricks bundle deploy -t qa
           elif [ "$env" == "qa_cp" ]; then
               export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_LS_DATA_CP }}
+              echo "this is qa_cp"
               databricks bundle validate -t qa_cp
               #databricks bundle deploy -t qa_cp
           elif [ "$env" == "uat" ]; then
