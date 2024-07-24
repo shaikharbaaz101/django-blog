@@ -1,0 +1,73 @@
+name: dmi-hiedwx-catalyst-deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      databricks-workspace:
+        type: choice
+        description: Target DMI Databricks workspace
+        required: true
+        options:
+          - qa
+          - qa_cp
+          - uat
+          - uat_cp
+          - prod
+
+jobs:
+  hiedwx-catalyst-build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ "${{ github.event.inputs.databricks-workspace }}" == "qa_cp" ]]; then
+            echo "ENVIRONMENT=qa" >> $GITHUB_ENV
+          elif [[ "${{ github.event.inputs.databricks-workspace }}" == "uat_cp" ]]; then
+            echo "ENVIRONMENT=uat" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=${{ github.event.inputs.databricks-workspace }}" >> $GITHUB_ENV
+          fi
+
+      - name: Display environment
+        run: echo "Environment: ${{ env.ENVIRONMENT }}"
+
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Deploy workflows
+        working-directory: catalyst
+        run: |
+          env=${{ github.event.inputs.databricks-workspace }}
+          if [ "$env" == "qa" ]; then
+              export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_LS_DATA }}
+              databricks bundle validate -t qa
+              #databricks bundle deploy -t qa
+          elif [ "$env" == "qa_cp" ]; then
+              export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_LS_DATA_CP }}
+              databricks bundle validate -t qa_cp
+              #databricks bundle deploy -t qa_cp
+          elif [ "$env" == "uat" ]; then
+              export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_LS_DATA }}
+              databricks bundle validate -t uat
+              #databricks bundle deploy -t uat
+          elif [ "$env" == "uat_cp" ]; then
+              export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_LS_DATA_CP }}
+              databricks bundle validate -t uat_cp
+              #databricks bundle deploy -t uat_cp
+          elif [ "$env" == "prod" ]; then
+              export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN }}
+              databricks bundle validate -t prod
+              #databricks bundle deploy -t prod
+          else
+              echo "TO BE SETUP"
+          fi
+    environment: ${{ env.ENVIRONMENT }}
