@@ -71,4 +71,3 @@ jobs:
           else
               echo "TO BE SETUP"
           fi
-    environment: ${{ env.ENVIRONMENT }}
