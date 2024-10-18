@@ -33,8 +33,37 @@ jobs:
         uses: databricks/setup-cli@main
       - name: Deploy workflows
         run: |
-          project_selection=${{ github.event.inputs.project }}
           echo "Im at aci job section"
+          project_selection=${{ github.event.inputs.project }}
+          env=${{ github.event.inputs.databricks-workspace }}
+          if [ "$env" == "qa" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
+              # databricks bundle validate -t qa
+              # databricks bundle deploy -t qa
+              echo "at aci qa"
+          elif [ "$env" == "qa_cp" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
+              # databricks bundle validate -t qa_cp
+              # databricks bundle deploy -t qa_cp
+              echo "at aci qa_cp"
+          elif [ "$env" == "uat" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
+              # databricks bundle validate -t uat
+              # databricks bundle deploy -t uat
+              echo "at aci uat"
+          elif [ "$env" == "uat_cp" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
+              # databricks bundle validate -t uat_cp
+              # databricks bundle deploy -t uat_cp
+              echo "at aci uat_cp"
+          elif [ "$env" == "prod" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
+              # databricks bundle validate -t prod
+              # databricks bundle deploy -t prod
+              echo "at aci prod"
+          else
+              echo "TO BE SETUP"
+          fi
 
   deploy-mips:
     if: ${{ github.event.inputs.project == 'mips' }}
@@ -47,5 +76,34 @@ jobs:
         uses: databricks/setup-cli@main
       - name: Deploy workflows
         run: |
-          project_selection=${{ github.event.inputs.project }}
           echo "Im at mips job section"
+          project_selection=${{ github.event.inputs.project }}
+          env=${{ github.event.inputs.databricks-workspace }}
+          if [ "$env" == "qa" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
+              # databricks bundle validate -t qa
+              # databricks bundle deploy -t qa
+              echo "at mips qa"
+          elif [ "$env" == "qa_cp" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
+              # databricks bundle validate -t qa_cp
+              # databricks bundle deploy -t qa_cp
+              echo "at mips qa_cp"
+          elif [ "$env" == "uat" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
+              # databricks bundle validate -t uat
+              # databricks bundle deploy -t uat
+              echo "at mips uat"
+          elif [ "$env" == "uat_cp" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
+              # databricks bundle validate -t uat_cp
+              # databricks bundle deploy -t uat_cp
+              echo "at mips uat_cp"
+          elif [ "$env" == "prod" ]; then
+              # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
+              # databricks bundle validate -t prod
+              # databricks bundle deploy -t prod
+              echo "at mips prod"
+          else
+              echo "TO BE SETUP"
+          fi
