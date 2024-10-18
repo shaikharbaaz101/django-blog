@@ -35,7 +35,7 @@ jobs:
         uses: databricks/setup-cli@main
 
       - name: Deploy Bundles
-        working-directory: provider
+        # working-directory: provider
         run: |
           environment=${{ github.event.inputs.databricks-workspace }}
           project_selection=${{ github.event.inputs.project }}
