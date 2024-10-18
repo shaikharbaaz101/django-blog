@@ -1,0 +1,51 @@
+name: master_provider_deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: 'Project Name'
+        required: true
+        type: choice
+        options:
+          - aci
+          - mips
+      databricks-workspace:
+        description: 'Target DMI Databricks workspace'
+        required: true
+        type: choice
+        options:
+          - qa
+          - qa_cp
+          - uat
+          - uat_cp
+          - prod
+
+jobs:
+  deploy-aci:
+    if: ${{ github.event.inputs.project == 'aci' }}
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Deploy workflows
+        run: |
+          project_selection=${{ github.event.inputs.project }}
+          echo "Im at aci job section"
+
+  deploy-mips:
+    if: ${{ github.event.inputs.project == 'mips' }}
+    runs-on: ubuntu-latest
+    environment: uat
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+      - name: Deploy workflows
+        run: |
+          project_selection=${{ github.event.inputs.project }}
+          echo "Im at mips job section"
