@@ -53,19 +53,19 @@ jobs:
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "uat" ]; then
-                  cd dab/aci
+                  # cd dab/aci
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "uat_cp" ]; then
-                  cd dab/aci
+                  # cd dab/aci
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "prod" ]; then
-                  cd dab/aci
+                  # cd dab/aci
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
@@ -85,19 +85,19 @@ jobs:
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "uat" ]; then
-                  cd dab/mips
+                  # cd dab/mips
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "uat_cp" ]; then
-                  cd dab/mips
+                  # cd dab/mips
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
                   echo "at $project_selection $environment"
               elif [ "$environment" == "prod" ]; then
-                  cd dab/mips
+                  # cd dab/mips
                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
                   # databricks bundle validate -t $environment
                   # databricks bundle deploy -t $environment
