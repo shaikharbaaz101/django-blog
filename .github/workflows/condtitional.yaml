@@ -24,7 +24,6 @@ on:
 
 jobs:
   deploy-aci:
-    if: ${{ github.event.inputs.project == 'aci' }}
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.databricks-workspace }}
     steps:
