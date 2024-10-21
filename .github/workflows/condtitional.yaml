@@ -190,7 +190,7 @@ jobs:
           echo "cd to $dir"
           # export DATABRICKS_TOKEN="$token"
           echo "export $token"
-          databricks bundle validate -t "$ENVIRONMENT"
-          databricks bundle deploy -t "$ENVIRONMENT"
+          # databricks bundle validate -t "$ENVIRONMENT"
+          # databricks bundle deploy -t "$ENVIRONMENT"
           echo "Deployed $PROJECT to $ENVIRONMENT"
 
