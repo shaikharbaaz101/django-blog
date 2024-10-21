@@ -148,7 +148,7 @@ jobs:
           echo "ENVIRONMENT=${{ github.event.inputs.databricks-workspace }}" >> $GITHUB_ENV
 
       - name: Deploy Bundles
-        working-directory: provider
+        # working-directory: provider
         run: |
           echo "at $PROJECT $ENVIRONMENT"
 
