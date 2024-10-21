@@ -152,8 +152,8 @@ jobs:
         run: |
           echo "at $PROJECT $ENVIRONMENT"
           # cd /dab/${{ github.event.inputs.project }}
-          DATABRICKS_TOKEN=${{ secrets["DATABRICKS_TOKEN_${{ github.event.inputs.databricks-workspace | upper }}_PROVIDER"] }}
-          echo DATABRICKS_TOKEN
-          databricks bundle validate -t $ENVIRONMENT
-          databricks bundle deploy -t $ENVIRONMENT
+          # DATABRICKS_TOKEN=${{ secrets["DATABRICKS_TOKEN_${{ github.event.inputs.databricks-workspace | upper }}_PROVIDER"] }}
+          # echo DATABRICKS_TOKEN
+          # databricks bundle validate -t $ENVIRONMENT
+          # databricks bundle deploy -t $ENVIRONMENT
 
