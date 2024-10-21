@@ -118,8 +118,14 @@ on:
         required: true
         type: choice
         options:
+          - base_tables
+          - mid
           - aci
           - mips
+          - eom
+          - eom_qm
+          - mcmw
+          - pi_metrics
       databricks-workspace:
         description: 'Target DMI Databricks workspace'
         required: true
@@ -142,13 +148,49 @@ jobs:
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
 
-      - name: Set Environment Variables
-        run: |
-          echo "PROJECT=${{ github.event.inputs.project }}" >> $GITHUB_ENV
-          echo "ENVIRONMENT=${{ github.event.inputs.databricks-workspace }}" >> $GITHUB_ENV
-
       - name: Deploy Bundles
         # working-directory: provider
+        env:
+          ENVIRONMENT: ${{ github.event.inputs.databricks-workspace }}
+          PROJECT: ${{ github.event.inputs.project }}
         run: |
-          echo "at $PROJECT $ENVIRONMENT"
+          case "$PROJECT" in
+            aci|mips|base_tables|mid|mcmw|eom|eom_qm|pi_metrics)
+              dir="dab/$PROJECT"
+              ;;
+            *)
+              echo "Invalid project selection: $PROJECT"
+              exit 1
+              ;;
+          esac
+
+          case "$ENVIRONMENT" in
+            qa)
+              token=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
+              ;;
+            qa_cp)
+              token=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
+              ;;
+            uat)
+              token=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
+              ;;
+            uat_cp)
+              token=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
+              ;;
+            prod)
+              token=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
+              ;;
+            *)
+              echo "Invalid environment selection: $ENVIRONMENT"
+              exit 1
+              ;;
+          esac
+
+          # cd "$dir"
+          echo "cd to $dir"
+          # export DATABRICKS_TOKEN="$token"
+          echo "export $token"
+          databricks bundle validate -t "$ENVIRONMENT"
+          databricks bundle deploy -t "$ENVIRONMENT"
+          echo "Deployed $PROJECT to $ENVIRONMENT"
 
