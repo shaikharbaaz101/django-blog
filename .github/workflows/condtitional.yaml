@@ -1,3 +1,113 @@
+# name: master_provider_deploy
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       project:
+#         description: 'Project Name'
+#         required: true
+#         type: choice
+#         options:
+#           - aci
+#           - mips
+
+#       databricks-workspace:
+#         description: 'Target DMI Databricks workspace'
+#         required: true
+#         type: choice
+#         options:
+#           - qa
+#           - qa_cp
+#           - uat
+#           - uat_cp
+#           - prod
+
+# jobs:
+#   deploy-aci:
+#     runs-on: ubuntu-latest
+#     environment: ${{ github.event.inputs.databricks-workspace }}
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v4
+
+#       - name: Install Databricks CLI
+#         uses: databricks/setup-cli@main
+
+#       - name: Deploy Bundles
+#         # working-directory: provider
+#         run: |
+#           environment=${{ github.event.inputs.databricks-workspace }}
+#           project_selection=${{ github.event.inputs.project }}
+#           if [ "$project_selection" == "aci" ]; then
+#               if [ "$environment" == "qa" ]; then
+#                   # cd /dab/aci
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "qa_cp" ]; then
+#                   # cd /dab/aci
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "uat" ]; then
+#                   # cd dab/aci
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "uat_cp" ]; then
+#                   # cd dab/aci
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "prod" ]; then
+#                   # cd dab/aci
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               fi
+#           elif [ "$project_selection" == "mips" ]; then
+#               if [ "$environment" == "qa" ]; then
+#                   # cd /dab/mips
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "qa_cp" ]; then
+#                   # cd /dab/mips
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "uat" ]; then
+#                   # cd dab/mips
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "uat_cp" ]; then
+#                   # cd dab/mips
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               elif [ "$environment" == "prod" ]; then
+#                   # cd dab/mips
+#                   # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
+#                   # databricks bundle validate -t $environment
+#                   # databricks bundle deploy -t $environment
+#                   echo "at $project_selection $environment"
+#               fi
+#           else
+#               echo "TO BE SETUP"
+#           fi
+
+
+
 name: master_provider_deploy
 
 on:
@@ -10,7 +120,6 @@ on:
         options:
           - aci
           - mips
-
       databricks-workspace:
         description: 'Target DMI Databricks workspace'
         required: true
@@ -23,7 +132,7 @@ on:
           - prod
 
 jobs:
-  deploy-aci:
+  deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.databricks-workspace }}
     steps:
@@ -33,75 +142,18 @@ jobs:
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
 
-      - name: Deploy Bundles
-        # working-directory: provider
+      - name: Set Environment Variables
         run: |
-          environment=${{ github.event.inputs.databricks-workspace }}
-          project_selection=${{ github.event.inputs.project }}
-          if [ "$project_selection" == "aci" ]; then
-              if [ "$environment" == "qa" ]; then
-                  # cd /dab/aci
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "qa_cp" ]; then
-                  # cd /dab/aci
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "uat" ]; then
-                  # cd dab/aci
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "uat_cp" ]; then
-                  # cd dab/aci
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "prod" ]; then
-                  # cd dab/aci
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              fi
-          elif [ "$project_selection" == "mips" ]; then
-              if [ "$environment" == "qa" ]; then
-                  # cd /dab/mips
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "qa_cp" ]; then
-                  # cd /dab/mips
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_QA_PROVIDER_CP }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "uat" ]; then
-                  # cd dab/mips
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "uat_cp" ]; then
-                  # cd dab/mips
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_UAT_PROVIDER_CP }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              elif [ "$environment" == "prod" ]; then
-                  # cd dab/mips
-                  # export DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN_PROD_PROVIDER }}
-                  # databricks bundle validate -t $environment
-                  # databricks bundle deploy -t $environment
-                  echo "at $project_selection $environment"
-              fi
-          else
-              echo "TO BE SETUP"
-          fi
+          echo "PROJECT=${{ github.event.inputs.project }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT=${{ github.event.inputs.databricks-workspace }}" >> $GITHUB_ENV
+
+      - name: Deploy Bundles
+        working-directory: provider
+        run: |
+          echo "at $PROJECT $ENVIRONMENT"
+          # cd /dab/${{ github.event.inputs.project }}
+          DATABRICKS_TOKEN=${{ secrets["DATABRICKS_TOKEN_${{ github.event.inputs.databricks-workspace | upper }}_PROVIDER"] }}
+          echo DATABRICKS_TOKEN
+          databricks bundle validate -t $ENVIRONMENT
+          databricks bundle deploy -t $ENVIRONMENT
+
